@@ -1,0 +1,11 @@
+--- linux-2.6.21.5/net/ipv4/fib_frontend.c-orig	2008-09-16 02:21:53.000000000 +0200
++++ linux-2.6.21.5/net/ipv4/fib_frontend.c	2008-09-16 02:22:26.000000000 +0200
+@@ -206,7 +206,7 @@ int fib_validate_source(__be32 src, __be
+ 
+ 	if (fib_lookup(&fl, &res))
+ 		goto last_resort;
+-	if (res.type != RTN_UNICAST)
++	if ((res.type != RTN_UNICAST) && !((res.type == RTN_LOCAL) && (dev->type == ARPHRD_IPGRE)))
+ 		goto e_inval_res;
+ 	*spec_dst = FIB_RES_PREFSRC(res);
+ 	fib_combine_itag(itag, &res);
